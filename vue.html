@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- v-if v-else v-else-if  under data status is equall-->
+    <div class="" id="testing">
+        <h1 v-f="status ==true">Hello vue</h1>
+        <h1 v-if="awesome">Vue is awesome!</h1>
+         <h1 v-else>Oh no 😢ありがとう</h1>
+         <div v-if="type === 'A'">
+            A
+          </div>
+          <div v-else-if="type === 'B'">
+            B
+          </div>
+          <div v-else-if="type === 'C'">
+            C
+          </div>
+          <div v-else>
+            Not A/B/C
+          </div>
+          <!-- <button v-on:click="clickMe()">click me</button> -->
+          <button @click="clickMe()">click me</button>
+
+
+          <h1>{{number}}</h1>
+          <button @click="dec()">Ded</button>
+          <button @click="inc()">inc</button>
+          <small v-if="number < 0">this is minus number</small>
+          <small v-if="number == 0">this is equally</small>
+          <small v-if="number > 0">this is plus number</small>
+          <input type="text" v-model="myText" @keyup.enter="send()">
+          <button @click="send()">send</button>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<script>
+
+    //attribute binding : v-bind
+    //js 
+    // onclick="clickMe()"
+    // function clickMe(){
+    //     alert("hi there");
+    // }
+    let app = new Vue({
+        el: '#testing',
+        data: {
+            number : 0,
+            status : true,
+            awesome : true,
+            type: 'A',
+            myText: '',
+        },
+        methods: {
+            // clickMe: function(){
+            //     alert('hello world')
+            // },
+
+            //es6
+            clickMe() {
+                alert('hello world')
+
+
+            },
+            dec(){
+                this.number--;
+            },
+            inc(){
+                this.number++;
+            },
+            send(){
+                console.log(this.myText)
+                this.myText = ""
+            },
+        }
+    })
+</script>
+</html>

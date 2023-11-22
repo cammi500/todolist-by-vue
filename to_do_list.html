@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="" id="testing">
+        <h3>to do list</h3>
+        <input type="text" placeholder="Enter item name" v-model="itemData.name"><br>
+        <input type="text" placeholder="Enter item price" v-model="itemData.price"><br>
+        <button @click="create()">Add</button>
+
+        <hr>
+        <table class="table" border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in items">
+                    <td scope="row">{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.price}}</td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+</body>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<script>
+    let app =new Vue({
+        el: '#testing',
+        data: {
+            itemData: {
+                name: '',
+                price: ''
+            },
+
+            items: [
+            //     {
+            //     id: '1',
+            //     name: 'red clothes',
+            //     price:'200000',
+            // }
+        ]
+        },
+        //function
+        methods: {
+            //array add 
+            create() {
+                // alert("create")
+                this.items.push({
+                    id: this.items.length+1,
+                    name: this.itemData.name,
+                    price: this.itemData.price,
+                })
+                //delete
+                this.itemData.name = '';
+                this.itemData.price ='';
+
+            }
+        }
+    })
+</script>
+</html>

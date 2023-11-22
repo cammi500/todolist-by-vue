@@ -7,9 +7,14 @@
 </head>
 <body>
     <div class="" id="testing">
-        <h3>to do list</h3>
-        <input type="text" placeholder="Enter item name" v-model="itemData.name"><br>
-        <input type="text" placeholder="Enter item price" v-model="itemData.price"><br>
+        <h3>To Do List</h3>
+        <input type="text" placeholder="Enter item name" v-model="itemData.name">
+        <small style="color: red;" v-if="validation.nameStatus">Item name is require</small>
+        <br>
+        
+        <input type="text" placeholder="Enter item price" v-model="itemData.price">
+        <small style="color: red; " v-if="validation.priceStatus">Price amount is require</small>
+        <br>
         <button @click="create()">Add</button>
 
         <hr>
@@ -49,22 +54,52 @@
             //     name: 'red clothes',
             //     price:'200000',
             // }
-        ]
+                 ],
+            validation: {
+                nameStatus :false,
+                priceStatus : false,
+            }
         },
         //function
         methods: {
             //array add 
             create() {
-                // alert("create")
+                //validate on off
+                this.validationCheck();
+                // if(this.itemData.name == ''){
+                //     this.validation.nameStatus = true
+                // }else {
+                //     this.validation.nameStatus = false
+                // }
+                // this.validation.nameStatus = this.itemData.name == '' ? true : false;
+                // if(this.itemData.price ==''){
+                //     this.validation.priceStatus = true
+                // }else{
+                //     this.validation.priceStatus = false
+                // }
+                // this.validation.priceStatus =this.itemData.price == '' ? true :false;
+                 
+                if(!this.validation.nameStatus && !this.validation.priceStatus){
+                     // alert("create")
                 this.items.push({
                     id: this.items.length+1,
                     name: this.itemData.name,
                     price: this.itemData.price,
                 })
+                this.clear();
+                }
+
+                
+            },
+            validationCheck(){
+                this.validation.nameStatus = this.itemData.name == '' ? true : false;
+                this.validation.priceStatus =this.itemData.price == '' ? true :false;
+
+            },
+            clear(){
                 //delete
                 this.itemData.name = '';
                 this.itemData.price ='';
-
             }
         }
     })

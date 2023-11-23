@@ -34,10 +34,12 @@
 
                         <div class="row">
                             <div class="form-group col-6">
-                                <input type="text" class="form-control" placeholder="Enter first number" v-model="userInput.firstNumber">
+                                <input type="number" class="form-control" placeholder="Enter first number" v-model="userInput.firstNumber">
+                                <small class="text-danger" v-if="validation.firstNumberStatus">First num is require</small>
                             </div>
                             <div class="col-6 form-group">
-                                <input type="text" class="form-control" placeholder="Enter second number" v-model="userInput.secondNumber">
+                                <input type="number" class="form-control" placeholder="Enter second number" v-model="userInput.secondNumber">
+                                <small class="text-danger" v-if="validation.secondNumberStatus">Second num is require</small>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -49,18 +51,21 @@
                                     <option value="*">*</option>
                                     <option value="/">/</option>
                                 </select>
+                                <small class="text-danger" v-if="validation.operatorStatus">Operator num is require</small>
                             </div>
                             <div class="col-4">
                                 <button class="btn btn-primary" @click="calculate()">Calculator</button>
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-warning" @click="clearForm()">Clear</button>
+                                <button class="btn btn-warning" @click="cleanForm()">Clear</button>
                             </div>
                             <div class="col-12">
-                                <button class="form-control width-100 btn  btn-info">Save</button>
+                                <button class="form-control width-100 btn  btn-info" @click="save()">Save</button>
                             </div>
                             <div class="text-white mt-3">History</div>
-                            <div class="text-secondary mt-1">Record</div>
+                            <div class="text-secondary mt-1" v-for="history in histories">
+                                {{history}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,11 +84,20 @@
                 firstNumber:'',
                 secondNumber:'',
                 operators:'',
-            }
+            },
+            validation: {
+                firstNumberStatus: false,
+                secondNumberStatus: false,
+                operatorStatus: false,
+            },
+            histories :[],
+            saveStatus :false,
         },
         methods: {
             calculate() {  
-                let result = this.operation();
+                this.validationCheck();
+                if(!this.validation.firstNumberStatus && !this.validation.secondNumberStatus && !this.validation.operatorStatus ){
+                    let result = this.operation();
                 // alert(result);
                 this.answer = `
                 ${this.userInput.firstNumber}
@@ -91,13 +105,35 @@
                 ${this.userInput.secondNumber} =
                 ${result}
                 `;
+                this.saveStatus=  true;
                 this.clearForm();
+                }
+                
             },
-        
+        validationCheck(){
+            this.validation.firstNumberStatus = this.userInput.firstNumber == '' ? true : false;
+            this.validation.secondNumberStatus =this.userInput.secondNumber == '' ? true : false;
+            this.validation.operatorStatus=this.userInput.operators == '' ? true : false;
+        },
         clearForm(){
             this.userInput.firstNumber = '';
             this.userInput.secondNumber ='';
             this.userInput.operators =''
+        },
+        cleanForm(){
+            this.validation.firstNumberStatus =false;
+            this.validation.secondNumberStatus=false;
+            this.validation.operatorStatus = false;
+            this.answer = 0;
+            this.histories = [];
+            this.clearForm();
+        },
+        save(){
+            if(this.saveStatus){
+                this.histories.push(this.answer);
+            this.answer = 0;
+            }
+            this.saveStatus = false;
         },
         operation () {
             let num1 =parseInt(this.userInput.firstNumber);//string to integer
